@@ -1,0 +1,21 @@
+<p>Employee-app works!</p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>isActive</th>
+
+    </tr>
+    <ng-container *ngFor="let temp of employees">
+        <tr *ngIf="temp.isActive ; else noContent">
+            <td>{{temp.id}}</td>
+            <td>{{temp.name}}</td>
+            <td>{{temp.role}}</td>
+            <td>{{temp.isActive}}</td>
+        </tr>
+        <ng-template #noContent>
+            <h3>{{temp.name}} is not active</h3>
+        </ng-template>
+    </ng-container>
+</table>

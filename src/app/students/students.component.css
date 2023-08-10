@@ -1,0 +1,16 @@
+.error_message {
+    color: rgb(233, 33, 33);
+}
+
+input[type="checkbox"][disabled] {
+    opacity: 1;
+    pointer-events: none;
+}
+
+/* Apply a general style to the form container */
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 30%;
+}

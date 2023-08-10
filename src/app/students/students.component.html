@@ -1,0 +1,180 @@
+<mat-slide-toggle  [(ngModel)]="removeAddStudentPage">
+    {{ removeAddStudentPage ? 'Add Student' :  'Show Students'}}
+</mat-slide-toggle>
+<br><br>
+<ng-container *ngIf="!removeAddStudentPage; else addStudent">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>isPaid</th>
+            <th>Action</th>
+        </tr>
+        <tr *ngFor="let temp of StudentData">
+            <td>{{temp.student_id}}</td>
+            <td>{{temp.student_name}}</td>
+            <td>{{temp.date_of_birth}}</td>
+            <td>{{temp.is_paid}}</td>
+            <td><button (click)="Deleteaction(temp.student_id)">Delete</button></td>
+            
+        </tr>
+    </table>
+    <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" [nexPage]="nexPage"
+        [previousPage]="previousPage" (nextPage)="loadNextPage()" (prevPage)="loadPrevPage()">
+    </app-pagination>
+    <br><br><br>
+</ng-container>
+<ng-template #addStudent>
+    <h2>Add New student</h2>
+    <br>
+    <ng-container *ngFor="let error of errorMessage">
+        <div *ngFor="let key of getErrorKeys(error)">
+            {{ key }}: {{ error[key] }}
+        </div>
+    </ng-container>
+
+    <!-- <form #studentForm="ngForm" (ngSubmit)="onSubmit(studentForm)">
+        <div>
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" name="studentName" ngModel required pattern="^[a-zA-Z\s]+$">
+            <div class="error_message"
+                *ngIf="studentForm.controls['studentName'].touched && studentForm.controls['studentName'].errors?.['required']">
+                Student Name is required.</div>
+            <div class="error_message"
+                *ngIf="studentForm.controls['studentName'].touched && studentForm.controls['studentName'].errors?.['pattern']">
+                Student Name should contain only letters (a-z, A-Z).
+            </div>
+        </div>
+        <div>
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" ngModel required>
+                <option disabled selected value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+        <div>
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth" ngModel required>
+            <div class="error_message"
+                *ngIf="studentForm.controls['dateOfBirth'].touched && studentForm.controls['dateOfBirth'].errors?.['required']">
+                DateofBirth is required.</div>
+
+        </div>
+        <div>
+            <label for="roomNumber">Room Number</label>
+            <input type="text" id="roomNumber" name="roomNumber" ngModel (input)="limitGuardianContact($event)"
+                required>
+            <div class="error_message"
+                *ngIf="studentForm.controls['roomNumber'].touched && studentForm.controls['roomNumber'].errors?.['required']">
+                roomNumber is required.</div>
+        </div>
+        <div>
+            <label for="guardianContact">Guardian Contact</label>
+            <input type="number" id="guardianContact" name="guardianContact" ngModel
+                (input)="limitGuardianContact($event)" required>
+            <div class="error_message"
+                *ngIf="studentForm.controls['guardianContact'].touched && studentForm.controls['guardianContact'].errors?.['required']">
+                Guardian Contact is required.
+            </div>
+        </div>
+        <div>
+            <label for="feesPaid">Fees Paid</label>
+            <input type="number" id="feesPaid" name="feesPaid" (input)="limitFeePaid($event)" ngModel>
+            <div class="error_message" *ngIf="studentForm.controls['feesPaid'].hasError('required')">
+                Fees Paid is required.
+            </div>
+        </div>
+        <div>
+            <label for="isPaid">Is Paid</label>
+            <input type="checkbox" id="isPaid" name="isPaid"  [ngModel]="formData.isPaid" (ngModelChange)="formData.isPaid = $event">
+        </div>
+        <div>
+            <label for="rollNo">Roll No</label>
+            <input type="number" id="rollNo" name="rollNo" ngModel required>
+        </div>
+       
+        <button type="submit" [disabled]="!studentForm.valid">Submit</button>
+    </form> -->
+
+    <form #studentForm="ngForm" (ngSubmit)="onSubmit(studentForm)">
+        <mat-form-field>
+            <label for="studentName">Student Name</label>
+            <input matInput type="text" id="studentName" name="studentName" ngModel required pattern="^[a-zA-Z\s]+$">
+            <mat-error
+                *ngIf="studentForm.controls['studentName'].touched && studentForm.controls['studentName'].errors?.['required']">
+                Student Name is required.
+            </mat-error>
+            <mat-error
+                *ngIf="studentForm.controls['studentName'].touched && studentForm.controls['studentName'].errors?.['pattern']">
+                Student Name should contain only letters (a-z, A-Z).
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <label for="gender">Gender</label>
+            <mat-select id="gender" name="gender" ngModel required>
+                <mat-option disabled selected value="">Select Gender</mat-option>
+                <mat-option value="M">Male</mat-option>
+                <mat-option value="F">Female</mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="studentForm.controls['gender'].touched && studentForm.controls['gender'].errors?.['required']">
+                Gender is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <label for="dateOfBirth">Date of Birth</label>
+            <input matInput type="date" id="dateOfBirth" name="dateOfBirth" ngModel required>
+            <mat-error
+                *ngIf="studentForm.controls['dateOfBirth'].touched && studentForm.controls['dateOfBirth'].errors?.['required']">
+                Date of Birth is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <label for="roomNumber">Room Number</label>
+            <input matInput type="text" id="roomNumber" name="roomNumber" ngModel (input)="limitGuardianContact($event)"
+                required>
+            <mat-error
+                *ngIf="studentForm.controls['roomNumber'].touched && studentForm.controls['roomNumber'].errors?.['required']">
+                Room Number is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <label for="guardianContact">Guardian Contact</label>
+            <input matInput type="number" id="guardianContact" name="guardianContact" ngModel
+               pattern="^\d{10}$" required>
+            <mat-error
+                *ngIf="studentForm.controls['guardianContact'].touched && studentForm.controls['guardianContact'].errors?.['required']">
+                Guardian Contact is required.
+            </mat-error>
+            <mat-error *ngIf="studentForm.controls['guardianContact'].hasError('pattern')">
+                Guardian Contact must be a 10-digit number.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <label for="feesPaid">Fees Paid</label>
+            <input matInput type="number" id="feesPaid" name="feesPaid" (input)="limitFeePaid($event)" ngModel>
+            <mat-error *ngIf="studentForm.controls['feesPaid'].hasError('required')">
+                Fees Paid is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox name="isPaid" [(ngModel)]="formData.isPaid">Is Paid</mat-checkbox>
+
+        <mat-form-field>
+            <label for="rollNo">Roll No</label>
+            <input matInput type="number" id="rollNo" name="rollNo" ngModel required>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" [disabled]="!studentForm.valid">Submit</button>
+        <button mat-raised-button type="button" (click)="resetForm(studentForm)">Reset</button>
+    </form>
+</ng-template>
+
+<br>
