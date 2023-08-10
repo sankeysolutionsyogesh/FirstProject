@@ -1,4 +1,4 @@
-<p>login Page!</p>
+<p>Login Page!</p>
 <div class="login-container">
     <h2>Login</h2>
     <form (submit)="login()">
@@ -10,6 +10,8 @@
             <label for="password">Password</label>
             <input type="password" id="password" [(ngModel)]="password" name="password" required>
         </div>
+        
         <button type="submit">Login</button>
     </form>
+    <p *ngIf="loginError" class="error-message">Login failed. Please check your credentials.</p>
 </div>

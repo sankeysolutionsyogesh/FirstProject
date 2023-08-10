@@ -28,8 +28,12 @@ export class AppComponent {
 })
 export class UserComponent {
   currentDate: Date = new Date();
-  constructor() {
-    console.log('Constructor called');
+  constructor(private loginService: LoginDataService, private router: Router, private route: ActivatedRoute) {
+    console.log('Error 404 called');
+  }
+
+  GoToLogin(){
+    this.loginService.logout()
   }
 
 }
@@ -38,7 +42,7 @@ export class UserComponent {
   selector: 'app-user-HomeComponent',
   template: `
   <nav>
-    <a routerLink="/">Logout</a>
+    <a routerLink="/" (click)="LogoutMenu()">Logout</a>
     <a routerLink="./department">Departments</a>
     <a routerLink="./employee">Employees</a>
     <a routerLink="./student">Student</a>
@@ -99,6 +103,10 @@ export class HomeComponent {
 
     console.log(this.loginService.getUserLog())
 
+  }
+
+  LogoutMenu(){
+    this.loginService.logout()
   }
 
 

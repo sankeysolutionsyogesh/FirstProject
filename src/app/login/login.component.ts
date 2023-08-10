@@ -11,8 +11,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  loginError: boolean = false;
 
   constructor(private loginService: LoginDataService, private router: Router, private route: ActivatedRoute) {
+  console.log("token - ", this.loginService.getToken())
   }
 
   ngOnInit():void{
@@ -23,8 +25,8 @@ export class LoginComponent {
 
   login(): void {
     const data = {
-      username: 'Yogesh',
-      password: '123'
+      username: this.username,
+      password: this.password
     }
 
 
@@ -32,9 +34,11 @@ export class LoginComponent {
       .then((response) => {
         console.log(response)
         this.router.navigate(['home']);
+        this.loginError = false;
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.log('Error:', error);
+        this.loginError = true;
 
       });
   }
